@@ -1,0 +1,11 @@
+# Child repos (separate git repositories)
+tshirt-backend/
+tshirt-shared/
+tshirt-store/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Claude memory (private)
+.claude/projects/
