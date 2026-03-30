@@ -45,12 +45,12 @@
 - [x] BE02.7 — Verify Store API
 
 ### BE03 — Print Order Module → [`docs/tasks/be/BE03-print-order-module.md`](tasks/be/BE03-print-order-module.md)
-- [ ] BE03.1 — PrintJob Data Model
-- [ ] BE03.2 — PrintOrderService
-- [ ] BE03.3 — Module Definition
-- [ ] BE03.4 — Register in medusa-config
-- [ ] BE03.5 — Migration
-- [ ] BE03.6 — Unit Tests
+- [x] BE03.1 — PrintJob Data Model
+- [x] BE03.2 — PrintOrderService
+- [x] BE03.3 — Module Definition
+- [x] BE03.4 — Register in medusa-config
+- [x] BE03.5 — Migration
+- [x] BE03.6 — Unit Tests
 
 ### BE04 — Workflow & Subscriber → [`docs/tasks/be/BE04-workflow-subscriber.md`](tasks/be/BE04-workflow-subscriber.md)
 - [ ] BE04.1 — fetchOrderStep
