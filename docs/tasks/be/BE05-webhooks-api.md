@@ -1,53 +1,39 @@
-# BE05 — Webhooks & Custom API Routes
+# BE05 — Admin API Routes
 
 ## Scope
-Print shop incoming webhook + admin print order routes.
-
-## Reference
-- `.claude/skills/print-shop/SKILL.md`
-- `docs/system-flow.md` → Flow 5
+Admin routes to manage print jobs: list, view detail, update status, cancel, and download design files. No external webhooks — all management is done through the admin panel.
 
 ## Tasks
 
-### BE05.1 — Print Shop Webhook Route
-- [ ] `src/api/webhooks/print-shop/route.ts`
-- [ ] POST handler:
-  1. Validate X-API-Key header
-  2. Parse body: { order_id, status, tracking_number? }
-  3. Validate with Zod schema
-  4. Update PrintJob via printOrderService
-  5. If shipped + tracking → update order fulfillment
-  6. Return 200
-- [ ] Error responses: 401 (bad API key), 400 (validation), 500
-
-### BE05.2 — Webhook Middleware
-- [ ] `src/api/middlewares.ts`
-- [ ] Skip Medusa auth for `/webhooks/*` routes
-- [ ] Add request logging for webhook routes
-- [ ] Rate limiting (optional, future)
-
-### BE05.3 — Admin Print Orders List
+### BE05.1 — Admin Print Orders List
 - [ ] `src/api/admin/print-orders/route.ts`
 - [ ] GET: List all print jobs (with pagination, filters)
-- [ ] Filters: status, date range, order_id
-- [ ] Response: { print_jobs, count }
+- [ ] Filters: status, order_id
+- [ ] Response: { print_jobs, count, offset, limit }
 
-### BE05.4 — Admin Print Order Detail
+### BE05.2 — Admin Print Order Detail
 - [ ] `src/api/admin/print-orders/[id]/route.ts`
 - [ ] GET: Retrieve single print job with order info
-- [ ] Include: order details, design URLs, status history
+- [ ] Include: order details, design URLs, status, notes
 
-### BE05.5 — Admin Retry Failed Job
-- [ ] `src/api/admin/print-orders/[id]/retry/route.ts`
-- [ ] POST: Retry a failed print job
-- [ ] Action: re-invoke sendToPrintShop with original payload
-- [ ] Update status back to "pending"
-- [ ] Validation: only retry if status === "failed"
+### BE05.3 — Admin Update Print Job Status
+- [ ] `src/api/admin/print-orders/[id]/route.ts`
+- [ ] POST: Update print job status
+- [ ] Body: { status, tracking_number?, notes? }
+- [ ] Validation: only valid status transitions allowed
+
+### BE05.4 — Admin Cancel Print Job
+- [ ] `src/api/admin/print-orders/[id]/cancel/route.ts`
+- [ ] POST: Cancel a pending/processing print job
+- [ ] Validation: only cancel if status is pending or processing
+
+### BE05.5 — Admin Middleware
+- [ ] `src/api/middlewares.ts`
+- [ ] Ensure admin auth for `/admin/print-orders/*` routes
 
 ### BE05.6 — Zod Schemas
-- [ ] `webhookPayloadSchema` — validate incoming print shop webhook
+- [ ] `updatePrintJobSchema` — validate status update body
 - [ ] `printOrderQuerySchema` — validate admin list query params
-- [ ] `retryRequestSchema` — validate retry request
 
 ### BE05.7 — Link PrintJob to Order
 - [ ] Define link: PrintJob → Order (Medusa Links)
@@ -55,15 +41,14 @@ Print shop incoming webhook + admin print order routes.
 - [ ] Enable querying print jobs from order and vice versa
 
 ## Acceptance Criteria
-- Webhook receives and processes status updates
-- API key validation works (reject invalid keys)
 - Admin routes return correct data (auth required)
-- Retry mechanism works for failed jobs
+- Status updates work with valid transitions
+- Cancel works for pending/processing jobs only
 - All inputs validated with Zod
+- Print jobs linked to orders
 
 ## Dependencies
 - BE03 (PrintOrder module)
-- BE04 (workflow)
 - BE01 (Medusa auth system)
 
 ## Estimated Subtasks: 7
