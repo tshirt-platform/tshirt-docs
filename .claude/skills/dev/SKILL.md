@@ -52,6 +52,28 @@ From the checklist, determine the status of `$ARGUMENTS`:
   ```
   Continue with all subtasks.
 
+## Step 1.5 — Git Branch
+
+Create a new branch for this task:
+
+```bash
+# Ensure we're on master and up to date
+git checkout master
+git pull origin master 2>/dev/null || true
+
+# Create and switch to task branch
+git checkout -b feat/$ARGUMENTS
+```
+
+Branch naming: `feat/$ARGUMENTS` (e.g., `feat/BE01`, `feat/FE04`)
+
+If branch already exists (resuming work):
+```bash
+git checkout feat/$ARGUMENTS
+```
+
+All commits for this task go on this branch. **NEVER commit directly to master.**
+
 ## Step 2 — Plan
 
 Before writing any code:
@@ -81,7 +103,10 @@ For each uncompleted subtask, in order:
    - Max 200 lines per file
    - TypeScript strict, no `any`
    - Comments in English
-3. After completing each subtask, print: `✅ $ARGUMENTS.N done`
+3. After completing each subtask:
+   - Stage and commit changes: `git add <specific files> && git commit -m "<concise message>"`
+   - **NEVER** add `Co-Authored-By` to commit messages
+   - Print: `✅ $ARGUMENTS.N done`
 
 ## Step 4 — Write Tests
 
@@ -303,14 +328,46 @@ If ANY test fails:
    Needs manual review.
    ```
 
-## Step 7 — Update Checklist
+## Step 7 — Update Checklist & Create PR
 
 Once ALL tests pass:
 
 1. **Update `docs/CHECKLIST.md`**: Change `[ ]` to `[x]` for each completed subtask
-2. Print final summary:
+2. **Commit checklist update**:
+   ```bash
+   git add docs/CHECKLIST.md
+   git commit -m "mark $ARGUMENTS as completed in checklist"
+   ```
+3. **Push branch and create PR**:
+   ```bash
+   git push -u origin feat/$ARGUMENTS
+   ```
+   Then create a PR to merge into `master` using `gh`:
+   ```bash
+   gh pr create --base master --head feat/$ARGUMENTS \
+     --title "feat($ARGUMENTS): [short description]" \
+     --body "$(cat <<'EOF'
+   ## Summary
+   - <bullet points summarizing what was implemented>
+
+   ## Test Results
+   - Build: ✅
+   - Unit Tests: ✅ (N/N pass)
+   - API Tests: ✅ / ⏭️ N/A
+   - Browser E2E: ✅ / ⏭️ N/A
+
+   ## Subtasks Completed
+   - [x] $ARGUMENTS.1 — [name]
+   - [x] $ARGUMENTS.2 — [name]
+   EOF
+   )"
+   ```
+4. Print final summary with the **PR URL**:
    ```
    ✅ Task $ARGUMENTS completed!
+
+   Branch: feat/$ARGUMENTS
+   PR: <url>
 
    Subtasks completed:
    - [x] $ARGUMENTS.1 — [name]
@@ -338,6 +395,9 @@ Once ALL tests pass:
 - NEVER skip writing tests (Step 4) — every task MUST have tests
 - NEVER skip verification (Step 5)
 - NEVER mark a task done without ALL applicable tests passing
+- NEVER commit directly to `master` — always work on `feat/$ARGUMENTS` branch
+- NEVER add `Co-Authored-By` to commit messages
+- ALWAYS create a PR to merge into `master` after tests pass
 - If a subtask ID is given (e.g., `BE03.2`), only work on that specific subtask
 - Follow the project's CLAUDE.md coding rules strictly
 - For browser tests: ALWAYS call tabs_context_mcp first, then create a new tab

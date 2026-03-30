@@ -40,8 +40,15 @@ Three packages, deployed independently:
 /dev BE01
   → Read CHECKLIST.md → Check if done
   → Done? → Notify and stop
-  → Not done? → Plan → Code → Write Tests → Verify → Fix loop → Update checklist
+  → Not done? → git checkout -b feat/BE01
+  → Plan → Code (commit per subtask) → Write Tests → Verify → Fix loop
+  → Update checklist → git push → gh pr create → Print PR URL
 ```
+
+### Git Flow Rules
+- Each task works on branch `feat/<task-id>` (e.g., `feat/BE01`)
+- Commit after each subtask — no `Co-Authored-By` in messages
+- After all tests pass → push branch → create PR to `master` via `gh`
 
 ### Testing: `/test-task <task-id>` — Smart Auto-Verification
 Test categories are auto-selected based on task type:
