@@ -28,6 +28,7 @@ Three packages, deployed independently:
 
 | Command | Usage | Description |
 |---|---|---|
+| `/setup-project` | `/setup-project` | Clone repos, start Docker, install deps, migrate, seed |
 | `/dev` | `/dev BE01` | Full workflow: check → plan → code → test → fix → update checklist |
 | `/dev-subtask` | `/dev-subtask BE03.2` | Execute a single subtask only |
 | `/plan-task` | `/plan-task FE04` | Plan implementation without coding |

@@ -4,8 +4,8 @@
 
 | Document | Path | Description |
 |---|---|---|
-| Requirements | `REQUIREMENTS.md` | Full requirements spec |
-| Init Guide | `INIT.md` | CLI init commands |
+| Requirements | `docs/REQUIREMENTS.md` | Full requirements spec |
+| Init Guide | `docs/INIT.md` | CLI init commands |
 | Business | `docs/business.md` | Business model, pricing, operations, KPI |
 | User Flow | `docs/user-flow.md` | 8-step user journey, UI/UX detail |
 | System Flow | `docs/system-flow.md` | 6 technical flows, sequence diagrams, data flow |

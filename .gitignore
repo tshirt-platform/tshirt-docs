@@ -9,3 +9,6 @@ Thumbs.db
 
 # Claude memory (private)
 .claude/projects/
+.claude/settings.local.json
+
+.env
