@@ -36,13 +36,13 @@
 ## Phase 2 — Backend Core
 
 ### BE02 — Product Data & API → [`docs/tasks/be/BE02-product-data.md`](tasks/be/BE02-product-data.md)
-- [ ] BE02.1 — Product Collections
-- [ ] BE02.2 — Product Options (color, size)
-- [ ] BE02.3 — Products (4 types)
-- [ ] BE02.4 — Variants Generation (color × size)
-- [ ] BE02.5 — Product Images
-- [ ] BE02.6 — Seed Script
-- [ ] BE02.7 — Verify Store API
+- [x] BE02.1 — Product Collections
+- [x] BE02.2 — Product Options (color, size)
+- [x] BE02.3 — Products (4 types)
+- [x] BE02.4 — Variants Generation (color × size)
+- [x] BE02.5 — Product Images
+- [x] BE02.6 — Seed Script
+- [x] BE02.7 — Verify Store API
 
 ### BE03 — Print Order Module → [`docs/tasks/be/BE03-print-order-module.md`](tasks/be/BE03-print-order-module.md)
 - [ ] BE03.1 — PrintJob Data Model
