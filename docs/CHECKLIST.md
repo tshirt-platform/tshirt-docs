@@ -53,12 +53,12 @@
 - [x] BE03.6 — Unit Tests
 
 ### BE04 — Workflow & Subscriber → [`docs/tasks/be/BE04-workflow-subscriber.md`](tasks/be/BE04-workflow-subscriber.md)
-- [ ] BE04.1 — fetchOrderStep
-- [ ] BE04.2 — extractDesignDataStep
-- [ ] BE04.3 — createPrintJobStep
-- [ ] BE04.4 — createPrintJobWorkflow
-- [ ] BE04.5 — order-placed Subscriber
-- [ ] BE04.6 — Unit Tests
+- [x] BE04.1 — fetchOrderStep
+- [x] BE04.2 — extractDesignDataStep
+- [x] BE04.3 — createPrintJobStep
+- [x] BE04.4 — createPrintJobWorkflow
+- [x] BE04.5 — order-placed Subscriber
+- [x] BE04.6 — Unit Tests
 
 ### BE05 — Admin API Routes → [`docs/tasks/be/BE05-webhooks-api.md`](tasks/be/BE05-webhooks-api.md)
 - [ ] BE05.1 — Admin Print Orders List
