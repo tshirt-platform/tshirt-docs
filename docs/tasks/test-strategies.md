@@ -63,24 +63,21 @@ GET /store/products?collection_id[]=xxx → filtered results
 | Subtask | Test Strategy | How |
 |---|---|---|
 | BE03.1 Data Model | DB Check | Table `print_job` exists with correct columns |
-| BE03.2 Service | Unit Test | CRUD operations, sendToPrintShop mock |
+| BE03.2 Service | Unit Test | CRUD operations, status transitions |
 | BE03.3 Module Def | Build Check | Module resolves in container |
 | BE03.4 Register | Build Check | medusa-config includes module |
 | BE03.5 Migration | DB Check | Migration applied, table exists |
-| BE03.6 Retry Logic | Unit Test | Retry behavior with mock failures |
-| BE03.7 Tests | Unit Test | All unit tests pass |
+| BE03.6 Tests | Unit Test | All unit tests pass |
 
 ### Unit Tests to Write
 ```
-print-order.service.test.ts:
-  - createPrintJob: creates record with correct fields
-  - updatePrintJobStatus: updates status correctly
+print-order.service.unit.spec.ts:
+  - createForOrder: creates record with correct fields
+  - updateStatus: updates status + notes correctly
+  - updateStatus: rejects invalid status transitions
   - getByOrderId: returns jobs for order
-  - callWithRetry: succeeds on first try
-  - callWithRetry: retries then succeeds
-  - callWithRetry: fails after max retries
-  - sendToPrintShop: sends correct payload format
-  - sendToPrintShop: creates PrintJob after send
+  - cancel: sets status to cancelled
+  - cancel: rejects non-cancellable jobs (shipped/delivered)
 ```
 
 ---
@@ -91,7 +88,7 @@ print-order.service.test.ts:
 |---|---|---|
 | BE04.1-4 Workflow | Unit Test | Each step, full workflow with mocks |
 | BE04.5 Subscriber | Unit Test | Event triggers workflow |
-| BE04.6 Integration | API Test | Create order → verify PrintJob created |
+| BE04.6 Tests | Unit Test | All unit tests pass |
 
 ### Unit Tests to Write
 ```
@@ -99,16 +96,15 @@ fetch-order.step.test.ts:
   - fetches order with line items
   - throws on missing order
 
-build-payload.step.test.ts:
-  - transforms order to PrintShopPayload
-  - validates design URLs in metadata
+extract-design-data.step.test.ts:
+  - extracts design URLs from order item metadata
   - throws on missing design metadata
 
-send-to-print-shop.step.test.ts:
-  - sends payload, returns job id
+create-print-job.step.test.ts:
+  - creates print job, returns job id
   - compensation cancels job
 
-send-to-print-shop.workflow.test.ts:
+create-print-job.workflow.test.ts:
   - full workflow success path
   - workflow rolls back on step failure
 
@@ -123,33 +119,36 @@ order-placed.subscriber.test.ts:
 
 | Subtask | Test Strategy | How |
 |---|---|---|
-| BE05.1 Webhook Route | API Test | POST with valid/invalid API key |
-| BE05.2 Middleware | API Test | Auth skipped for /webhooks/* |
-| BE05.3-5 Admin Routes | API Test | CRUD with admin auth |
+| BE05.1-2 Admin List/Detail | API Test | GET with admin auth |
+| BE05.3 Status Update | API Test | POST with valid/invalid status |
+| BE05.4 Cancel | API Test | POST cancel on pending/non-pending |
+| BE05.5 Middleware | API Test | Admin auth required |
 | BE05.6 Schemas | Unit Test | Zod validation pass/fail |
 | BE05.7 Links | Build Check | Link resolves correctly |
 
 ### Unit Tests to Write
 ```
-webhook-payload.schema.test.ts:
-  - valid payload passes
-  - missing order_id fails
+print-order.schema.test.ts:
+  - valid status update passes
   - invalid status fails
+  - valid query params pass
 
 admin-routes.test.ts:
   - GET /admin/print-orders returns list
   - GET /admin/print-orders/:id returns detail
-  - POST /admin/print-orders/:id/retry retries failed job
-  - POST /admin/print-orders/:id/retry rejects non-failed job
+  - POST /admin/print-orders/:id updates status
+  - POST /admin/print-orders/:id/cancel cancels job
+  - POST /admin/print-orders/:id/cancel rejects shipped job
 ```
 
 ### E2E Tests (API)
 ```
-POST /webhooks/print-shop (no API key) → 401
-POST /webhooks/print-shop (valid key, valid body) → 200
-POST /webhooks/print-shop (valid key, invalid body) → 400
 GET /admin/print-orders (no auth) → 401
 GET /admin/print-orders (admin auth) → 200
+GET /admin/print-orders/:id (admin auth) → 200
+POST /admin/print-orders/:id (valid status) → 200
+POST /admin/print-orders/:id/cancel (pending) → 200
+POST /admin/print-orders/:id/cancel (shipped) → 400
 ```
 
 ---

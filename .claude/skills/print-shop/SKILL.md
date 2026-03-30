@@ -1,184 +1,147 @@
 ---
 name: print-shop
-description: Print shop integration — webhook payload format, retry logic with exponential backoff, incoming webhook handler, S3 presigned URL strategy. Use when working on print shop communication.
+description: Print order management — internal print job tracking, status flow, admin management, S3 design file storage. Use when working on print order features.
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 ---
 
-# Skill: Print Shop Integration
+# Skill: Print Order Management
 
 ## Overview
-When an order is placed, the system automatically sends design files and order details to the print shop API. The print shop sends status updates back via webhook.
+When an order is placed, the system automatically creates a PrintJob record. The admin then manages the job manually: downloads design files, brings them to a print shop, and updates status as the job progresses. There is no external print shop API integration.
 
-## Outgoing Webhook Payload
+## Print Job Status Flow
+```
+pending → processing → shipped → delivered
+    ↘         ↘
+   cancelled  cancelled
+```
 
+### Status Definitions
+| Status | Meaning |
+|---|---|
+| `pending` | Order placed, awaiting admin action |
+| `processing` | Admin has started working on the print job |
+| `shipped` | Printed and shipped to customer |
+| `delivered` | Customer received the order |
+| `cancelled` | Job cancelled (only from pending/processing) |
+
+### Valid Transitions
 ```ts
-// Sent to PRINT_SHOP_API_URL when order.placed fires
-interface PrintShopPayload {
-  order_id: string
-  customer: {
-    name: string
-    phone: string
-    address: string
-  }
-  items: Array<{
-    shirt_type: "tshirt" | "polo" | "hoodie"
-    shirt_color: string
-    shirt_size: string
-    quantity: number
-    design_png_url: string   // S3 URL — 3000x3000px 300 DPI PNG
-    design_json_url: string  // S3 URL — Fabric.js JSON state
-    design_side: "front" | "back"
-  }>
-  created_at: string         // ISO 8601
+const VALID_TRANSITIONS: Record<string, string[]> = {
+  pending: ["processing", "cancelled"],
+  processing: ["shipped", "cancelled"],
+  shipped: ["delivered"],
+  delivered: [],     // terminal
+  cancelled: [],     // terminal
 }
 ```
 
-## Sending to Print Shop
+## PrintJob Data Model
+
+```ts
+// src/modules/print-order/models/print-job.ts
+import { model } from "@medusajs/framework/utils"
+
+const PrintJob = model.define("print_job", {
+  id: model.id().primaryKey(),
+  order_id: model.text(),
+  status: model.enum(["pending", "processing", "shipped", "delivered", "cancelled"]),
+  design_png_url: model.text(),
+  design_json_url: model.text(),
+  tracking_number: model.text().nullable(),
+  notes: model.text().nullable(),
+  metadata: model.json().nullable(),
+})
+
+export default PrintJob
+```
+
+## PrintOrderService
 
 ```ts
 // src/modules/print-order/service.ts
-import axios from "axios"
-
 class PrintOrderService extends MedusaService({ PrintJob }) {
-  async sendToPrintShop(payload: PrintShopPayload): Promise<string> {
-    const response = await this.callWithRetry(
-      () => axios.post(
-        process.env.PRINT_SHOP_API_URL!,
-        payload,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "X-API-Key": process.env.PRINT_SHOP_API_KEY!,
-          },
-          timeout: 10_000,
-        }
-      )
-    )
-
-    const printJob = await this.createPrintJobs({
-      order_id: payload.order_id,
-      status: "pending",
-      design_png_url: payload.items[0].design_png_url,
-      design_json_url: payload.items[0].design_json_url,
-      external_id: response.data.job_id ?? null,
-    })
-
-    return printJob.id
-  }
-}
-```
-
-## Retry Logic
-
-Exponential backoff with max 3 retries.
-
-```ts
-private async callWithRetry<T>(
-  fn: () => Promise<T>,
-  maxRetries = 3,
-  baseDelay = 1000,
-): Promise<T> {
-  let lastError: Error | undefined
-
-  for (let attempt = 0; attempt <= maxRetries; attempt++) {
-    try {
-      return await fn()
-    } catch (error) {
-      lastError = error as Error
-      if (attempt === maxRetries) break
-      // Exponential backoff: 1s, 4s, 16s
-      const delay = baseDelay * Math.pow(4, attempt)
-      await new Promise((resolve) => setTimeout(resolve, delay))
-    }
-  }
-
-  throw lastError
-}
-```
-
-### When retry exhausts:
-1. Log the failure with full context (order_id, attempt count, error)
-2. Update PrintJob status to `"failed"`
-3. The admin can manually retry from the admin panel
-
-## Incoming Webhook (from Print Shop)
-
-```ts
-// src/api/webhooks/print-shop/route.ts
-import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-
-export async function POST(req: MedusaRequest, res: MedusaResponse) {
-  // 1. Validate webhook authenticity
-  const apiKey = req.headers["x-api-key"]
-  if (apiKey !== process.env.PRINT_SHOP_API_KEY) {
-    res.status(401).json({ error: "Unauthorized" })
-    return
-  }
-
-  // 2. Parse payload
-  const { order_id, status, tracking_number } = req.body as {
+  // Create a print job for an order
+  async createForOrder(data: {
     order_id: string
-    status: "printing" | "shipped" | "delivered" | "failed"
-    tracking_number?: string
+    design_png_url: string
+    design_json_url: string
+  }): Promise<PrintJob> {
+    return this.createPrintJobs({
+      ...data,
+      status: "pending",
+    })
   }
 
-  // 3. Update print job
-  const printOrderService = req.scope.resolve("printOrder")
-  await printOrderService.updatePrintJobStatus(order_id, status, tracking_number)
-
-  // 4. Optionally update Medusa order fulfillment
-  if (status === "shipped" && tracking_number) {
-    // Create fulfillment with tracking info
+  // Update status with transition validation
+  async updateStatus(
+    printJobId: string,
+    status: string,
+    notes?: string
+  ): Promise<void> {
+    const job = await this.retrievePrintJob(printJobId)
+    // Validate transition
+    if (!VALID_TRANSITIONS[job.status]?.includes(status)) {
+      throw new Error(`Cannot transition from ${job.status} to ${status}`)
+    }
+    await this.updatePrintJobs(printJobId, {
+      status,
+      ...(notes !== undefined ? { notes } : {}),
+    })
   }
 
-  res.sendStatus(200)
+  // Get all print jobs for an order
+  async getByOrderId(orderId: string) {
+    return this.listPrintJobs({ order_id: orderId })
+  }
+
+  // Cancel a pending/processing job
+  async cancel(printJobId: string): Promise<void> {
+    await this.updateStatus(printJobId, "cancelled")
+  }
 }
 ```
 
-### Status Flow
-```
-pending → printing → shipped → delivered
-                ↘ failed (at any step)
-```
-
-### Webhook Security
-- Validate `X-API-Key` header matches `PRINT_SHOP_API_KEY`
-- Skip Medusa auth middleware for `/webhooks/*` routes
-- Log all incoming webhooks for debugging
-
-## S3 Design Files
-
-### Why Presigned URLs (not base64)
-- Design PNGs are ~5-15MB at 3000x3000 300DPI
-- Base64 increases size by ~33%
-- Presigned URLs let the print shop download directly from S3
-- URLs are time-limited (default 24h) — generate fresh URLs if needed
-
-### URL Structure
-```
-s3://{bucket}/{prefix}{order_id}/{side}.png
-s3://{bucket}/{prefix}{order_id}/{side}.json
-
-Example:
-s3://tshirt-designs/designs/order_abc123/front.png
-s3://tshirt-designs/designs/order_abc123/front.json
-```
-
-## Workflow: send-to-print-shop
+## Workflow: create-print-job
 
 ```ts
-export const sendToPrintShopWorkflow = createWorkflow(
-  "send-to-print-shop",
+// Triggered by order.placed subscriber
+export const createPrintJobWorkflow = createWorkflow(
+  "create-print-job",
   (input: { order_id: string }) => {
     const order = fetchOrderStep(input)
-    const payload = buildPayloadStep({ order })
-    const printJob = sendToPrintShopStep({ payload })
+    const designData = extractDesignDataStep({ order })
+    const printJob = createPrintJobStep(designData)
     return new WorkflowResponse(printJob)
   }
 )
 ```
 
-### Compensation
-If `sendToPrintShopStep` fails after creating a print job:
-- Cancel the print job via print shop API (if external_id exists)
-- Update local PrintJob status to `"failed"`
+## Admin Routes
+
+| Method | Route | Action |
+|---|---|---|
+| GET | `/admin/print-orders` | List all print jobs (paginated, filterable) |
+| GET | `/admin/print-orders/:id` | Get print job detail |
+| POST | `/admin/print-orders/:id` | Update status (+ tracking_number, notes) |
+| POST | `/admin/print-orders/:id/cancel` | Cancel a job |
+
+## S3 Design Files
+
+### Why Presigned URLs
+- Design PNGs are ~5-15MB at 3000x3000 300DPI
+- Presigned URLs allow direct download from S3
+- URLs are time-limited (default 24h)
+
+### URL Structure
+```
+s3://{bucket}/designs/{order_id}/{side}.png
+s3://{bucket}/designs/{order_id}/{side}.json
+```
+
+### Admin Workflow
+1. Admin sees new pending print job in admin panel
+2. Downloads design PNG + JSON from S3 URLs
+3. Brings files to print shop / prints locally
+4. Updates status: pending → processing → shipped → delivered
+5. Adds tracking number when shipped

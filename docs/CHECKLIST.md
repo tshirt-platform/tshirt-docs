@@ -45,28 +45,27 @@
 - [x] BE02.7 — Verify Store API
 
 ### BE03 — Print Order Module → [`docs/tasks/be/BE03-print-order-module.md`](tasks/be/BE03-print-order-module.md)
-- [ ] BE03.1 — PrintJob Data Model
-- [ ] BE03.2 — PrintOrderService
-- [ ] BE03.3 — Module Definition
-- [ ] BE03.4 — Register in medusa-config
-- [ ] BE03.5 — Migration
-- [ ] BE03.6 — Retry Logic Implementation
-- [ ] BE03.7 — Unit Tests
+- [x] BE03.1 — PrintJob Data Model
+- [x] BE03.2 — PrintOrderService
+- [x] BE03.3 — Module Definition
+- [x] BE03.4 — Register in medusa-config
+- [x] BE03.5 — Migration
+- [x] BE03.6 — Unit Tests
 
 ### BE04 — Workflow & Subscriber → [`docs/tasks/be/BE04-workflow-subscriber.md`](tasks/be/BE04-workflow-subscriber.md)
 - [ ] BE04.1 — fetchOrderStep
-- [ ] BE04.2 — buildPayloadStep
-- [ ] BE04.3 — sendToPrintShopStep
-- [ ] BE04.4 — sendToPrintShopWorkflow
+- [ ] BE04.2 — extractDesignDataStep
+- [ ] BE04.3 — createPrintJobStep
+- [ ] BE04.4 — createPrintJobWorkflow
 - [ ] BE04.5 — order-placed Subscriber
-- [ ] BE04.6 — Integration Test
+- [ ] BE04.6 — Unit Tests
 
-### BE05 — Webhooks & API Routes → [`docs/tasks/be/BE05-webhooks-api.md`](tasks/be/BE05-webhooks-api.md)
-- [ ] BE05.1 — Print Shop Webhook Route
-- [ ] BE05.2 — Webhook Middleware
-- [ ] BE05.3 — Admin Print Orders List
-- [ ] BE05.4 — Admin Print Order Detail
-- [ ] BE05.5 — Admin Retry Failed Job
+### BE05 — Admin API Routes → [`docs/tasks/be/BE05-webhooks-api.md`](tasks/be/BE05-webhooks-api.md)
+- [ ] BE05.1 — Admin Print Orders List
+- [ ] BE05.2 — Admin Print Order Detail
+- [ ] BE05.3 — Admin Update Print Job Status
+- [ ] BE05.4 — Admin Cancel Print Job
+- [ ] BE05.5 — Admin Middleware
 - [ ] BE05.6 — Zod Schemas
 - [ ] BE05.7 — Link PrintJob to Order
 

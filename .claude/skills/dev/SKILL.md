@@ -86,11 +86,37 @@ Before writing any code:
      ⚠️ Cannot start $ARGUMENTS. Missing dependencies: [list]
      Complete those tasks first.
      ```
-3. Create a brief implementation plan:
-   - List files to create/modify
-   - Note any edge cases
+3. Create a **detailed** implementation plan that includes **exact code outlines** for every file:
+   - For each file to create/modify, show:
+     - Full file path
+     - Key imports, class/function signatures, type definitions
+     - Method bodies summarized as pseudocode or short code snippets
+     - Exports
+   - Note any edge cases or risks
    - Identify which tests to write (from test-strategies.md)
-4. Print the plan and proceed
+   - For test files: list every test case with a one-line description of what it asserts
+4. Print the plan in a clear format and **ASK the user to confirm** before proceeding:
+   ```
+   📋 Implementation Plan for $ARGUMENTS
+
+   ### File: path/to/file.ts (create / modify)
+   Purpose: ...
+   ```ts
+   // key code outline
+   ```
+
+   ### Edge Cases & Risks
+   - ...
+
+   ### Tests
+   - ...
+
+   👉 Approve this plan? (yes / suggest changes)
+   ```
+5. **WAIT for user response**:
+   - If user says "yes", "ok", "tiếp tục", "lgtm", etc. → proceed to Step 3
+   - If user gives feedback → revise the plan, print updated version, ask again
+   - **NEVER proceed to Step 3 without explicit user approval**
 
 ## Step 3 — Code
 

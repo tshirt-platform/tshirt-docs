@@ -1,12 +1,11 @@
 # BE03 — Print Order Module
 
 ## Scope
-Custom Medusa module để quản lý print jobs.
+Custom Medusa module to manage print jobs internally. No external print shop API — the admin manages job status manually, exports design files, and brings them to a print shop.
 
 ## Reference
 - `.claude/skills/medusa-v2/SKILL.md`
 - `.claude/skills/print-shop/SKILL.md`
-- `docs/system-flow.md` → Flow 5
 
 ## Tasks
 
@@ -15,12 +14,11 @@ Custom Medusa module để quản lý print jobs.
 - [ ] Fields:
   - id (PK, auto-generated)
   - order_id (text, indexed)
-  - status (enum: pending, printing, shipped, delivered, failed)
-  - design_png_url (text)
-  - design_json_url (text)
-  - external_id (text, nullable — print shop's job ID)
+  - status (enum: pending, processing, shipped, delivered, cancelled)
+  - design_png_url (text — S3 presigned URL for design PNG)
+  - design_json_url (text — S3 presigned URL for Fabric.js JSON)
   - tracking_number (text, nullable)
-  - error_message (text, nullable)
+  - notes (text, nullable — admin notes)
   - metadata (json, nullable)
   - created_at, updated_at (auto)
 
@@ -28,11 +26,10 @@ Custom Medusa module để quản lý print jobs.
 - [ ] `src/modules/print-order/service.ts`
 - [ ] Extends MedusaService({ PrintJob })
 - [ ] Custom methods:
-  - `sendToPrintShop(payload)` — POST to print shop API with retry
-  - `updatePrintJobStatus(orderId, status, trackingNumber?)` — update status
+  - `createForOrder(data)` — create a new print job for an order
+  - `updateStatus(printJobId, status, notes?)` — update job status + optional notes
   - `getByOrderId(orderId)` — retrieve print jobs for an order
-  - `retryFailedJob(printJobId)` — retry a failed job
-- [ ] Private: `callWithRetry(fn, maxRetries, baseDelay)` — exponential backoff
+  - `cancel(printJobId)` — cancel a pending/processing job
 
 ### BE03.3 — Module Definition
 - [ ] `src/modules/print-order/index.ts`
@@ -47,25 +44,22 @@ Custom Medusa module để quản lý print jobs.
 - [ ] Run: `pnpm medusa db:migrate`
 - [ ] Verify table created in PostgreSQL
 
-### BE03.6 — Retry Logic Implementation
-- [ ] Exponential backoff: 1s, 4s, 16s (base × 4^attempt)
-- [ ] Max 3 retries
-- [ ] On final failure: update PrintJob status to "failed", store error_message
-- [ ] Log each attempt with context
-
-### BE03.7 — Unit Tests
-- [ ] Test callWithRetry: success, retry then success, all retries fail
-- [ ] Test sendToPrintShop: mock axios, verify payload format
-- [ ] Test updatePrintJobStatus: verify DB update
+### BE03.6 — Unit Tests
+- [ ] Test createForOrder: creates record with correct fields
+- [ ] Test updateStatus: updates status + notes correctly
+- [ ] Test updateStatus: rejects invalid status transitions
+- [ ] Test getByOrderId: returns jobs for order
+- [ ] Test cancel: sets status to cancelled
+- [ ] Test cancel: rejects non-cancellable jobs (shipped/delivered)
 
 ## Acceptance Criteria
 - PrintJob table exists in database
 - CRUD operations work via service
-- sendToPrintShop sends correct payload format
-- Retry logic works (tested with mock failures)
+- Status transitions are validated
 - Module resolves correctly in container
+- All unit tests pass
 
 ## Dependencies
 - BE01 (database, Medusa running)
 
-## Estimated Subtasks: 7
+## Estimated Subtasks: 6
