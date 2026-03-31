@@ -61,13 +61,13 @@
 - [x] BE04.6 — Unit Tests
 
 ### BE05 — Admin API Routes → [`docs/tasks/be/BE05-webhooks-api.md`](tasks/be/BE05-webhooks-api.md)
-- [ ] BE05.1 — Admin Print Orders List
-- [ ] BE05.2 — Admin Print Order Detail
-- [ ] BE05.3 — Admin Update Print Job Status
-- [ ] BE05.4 — Admin Cancel Print Job
-- [ ] BE05.5 — Admin Middleware
-- [ ] BE05.6 — Zod Schemas
-- [ ] BE05.7 — Link PrintJob to Order
+- [x] BE05.1 — Admin Print Orders List
+- [x] BE05.2 — Admin Print Order Detail
+- [x] BE05.3 — Admin Update Print Job Status
+- [x] BE05.4 — Admin Cancel Print Job
+- [x] BE05.5 — Admin Middleware
+- [x] BE05.6 — Zod Schemas
+- [x] BE05.7 — Link PrintJob to Order
 
 ---
 
