@@ -90,3 +90,25 @@ cd tshirt-store && pnpm dev       # :3000
 # Terminal 3: Shared types (watch mode)
 cd tshirt-shared && pnpm dev
 ```
+
+## Lessons Learned
+
+### Medusa Store API
+- **`region_id` is REQUIRED** for any query involving `calculated_price`. Always fetch region first, then pass to product/variant queries.
+- **`x-publishable-api-key` header** is required for all `/store/*` routes. JS SDK handles it automatically; manual testing (api-tester, curl) must set it.
+
+### Medusa Module System
+- **Custom module `linkable` is empty at import time** — only populated at Medusa boot. Use manual `InputSource` shape when writing `defineLink` for custom modules.
+- **Workflow `WorkflowData` wrappers** — step outputs are wrapped, so downstream step inputs should use optional fields and null-safe defaults.
+
+### Next.js 16
+- **`params` and `searchParams` are Promises** — must `await` them. Breaking change from Next.js 14/15.
+- **Use `<Link>` from `next/link`** — not `<a>` tags — for client-side navigation.
+- Read `node_modules/next/dist/docs/` for latest API reference.
+
+### Windows Development
+- **Inline env vars in npm scripts don't work on Windows cmd** — `TEST_TYPE=unit jest` fails. Use Git Bash or prefix with `cross-env`.
+
+### Testing
+- **Always run E2E browser tests after API tests** — unit tests with mocks can pass while real API calls fail (e.g., missing `region_id`).
+- **Each child package has its own git repo** — commit/branch/push from inside `tshirt-backend/` or `tshirt-store/`, not from monorepo root.

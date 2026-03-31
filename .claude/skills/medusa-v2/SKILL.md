@@ -196,3 +196,41 @@ const orderService = req.scope.resolve("order")
 const productService = req.scope.resolve("product")
 const myService = req.scope.resolve("myModule")
 ```
+
+## Pitfalls & Lessons
+
+### Store API: `region_id` required for pricing
+Any Store API call that includes `calculated_price` (products, variants) MUST pass `region_id`. Without it → runtime error.
+```ts
+// ✅ Always fetch region first
+const { regions } = await medusa.store.region.list({ limit: 1 })
+const regionId = regions[0].id
+await medusa.store.product.list({ region_id: regionId, fields: "+variants.calculated_price" })
+```
+
+### Store API: `x-publishable-api-key` header required
+All `/store/*` routes require `x-publishable-api-key` header. The JS SDK sets it automatically from `publishableKey` config. For manual testing, set header explicitly.
+
+### defineLink: custom module `linkable` is empty at import time
+Built-in modules (Order, Product, etc.) have `.linkable` populated at import. Custom modules do NOT — their `.linkable` is only populated at Medusa boot. Use manual `InputSource` shape:
+```ts
+defineLink(
+  {
+    linkable: {
+      serviceName: "myModule",
+      field: "myEntity",
+      entity: "MyEntity",
+      linkable: "my_entity_id",
+      primaryKey: "id",
+    },
+    isList: true,
+  },
+  OrderModule.linkable.order
+)
+```
+
+### Workflow step type compatibility
+Step outputs are wrapped in `WorkflowData<T>`. When passing between steps:
+- Use optional fields for arrays (e.g., `items?: Array<...>`)
+- Default with `?? []` to handle undefined
+- Add explicit types on compensation functions
