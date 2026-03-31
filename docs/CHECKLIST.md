@@ -74,26 +74,26 @@
 ## Phase 3 — Frontend Pages
 
 ### FE02 — Landing Page → [`docs/tasks/fe/FE02-landing-page.md`](tasks/fe/FE02-landing-page.md)
-- [ ] FE02.1 — Page Route & Layout
-- [ ] FE02.2 — Hero Section
-- [ ] FE02.3 — How It Works Section
-- [ ] FE02.4 — Template Gallery Section
-- [ ] FE02.5 — Social Proof Section
-- [ ] FE02.6 — Pricing Section
-- [ ] FE02.7 — FAQ Section
-- [ ] FE02.8 — Header Component
-- [ ] FE02.9 — Footer Component
+- [x] FE02.1 — Page Route & Layout
+- [x] FE02.2 — Hero Section
+- [x] FE02.3 — How It Works Section
+- [x] FE02.4 — Template Gallery Section
+- [x] FE02.5 — Social Proof Section
+- [x] FE02.6 — Pricing Section
+- [x] FE02.7 — FAQ Section
+- [x] FE02.8 — Header Component
+- [x] FE02.9 — Footer Component
 
 ### FE03 — Product Pages → [`docs/tasks/fe/FE03-product-pages.md`](tasks/fe/FE03-product-pages.md)
-- [ ] FE03.1 — Product Listing Page
-- [ ] FE03.2 — Product Card Component
-- [ ] FE03.3 — Product Filter
-- [ ] FE03.4 — Product Detail Page
-- [ ] FE03.5 — Image Gallery
-- [ ] FE03.6 — Product Info Panel
-- [ ] FE03.7 — Size Chart
-- [ ] FE03.8 — Variant Selection Logic
-- [ ] FE03.9 — Navigate to Editor
+- [x] FE03.1 — Product Listing Page
+- [x] FE03.2 — Product Card Component
+- [x] FE03.3 — Product Filter
+- [x] FE03.4 — Product Detail Page
+- [x] FE03.5 — Image Gallery
+- [x] FE03.6 — Product Info Panel
+- [x] FE03.7 — Size Chart
+- [x] FE03.8 — Variant Selection Logic
+- [x] FE03.9 — Navigate to Editor
 
 ---
 
