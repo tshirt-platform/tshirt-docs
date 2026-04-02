@@ -100,18 +100,18 @@
 ## Phase 4 — Design Editor (Core Feature)
 
 ### FE04 — Design Editor → [`docs/tasks/fe/FE04-design-editor.md`](tasks/fe/FE04-design-editor.md)
-- [ ] FE04.1 — Zustand Design Store
-- [ ] FE04.2 — Canvas Initialization
-- [ ] FE04.3 — Print Area Overlay
-- [ ] FE04.4 — T-shirt Mockup Background
-- [ ] FE04.5 — ToolBar Component
-- [ ] FE04.6 — Text Tool (TextEditor)
-- [ ] FE04.7 — Image Upload (ImageUploader)
-- [ ] FE04.8 — Template Gallery
-- [ ] FE04.9 — Layer Panel
-- [ ] FE04.10 — Side Toggle (Front/Back)
-- [ ] FE04.11 — Keyboard Shortcuts
-- [ ] FE04.12 — DesignEditorRoot (Wrapper)
+- [x] FE04.1 — Zustand Design Store
+- [x] FE04.2 — Canvas Initialization
+- [x] FE04.3 — Print Area Overlay
+- [x] FE04.4 — T-shirt Mockup Background
+- [x] FE04.5 — ToolBar Component
+- [x] FE04.6 — Text Tool (TextEditor)
+- [x] FE04.7 — Image Upload (ImageUploader)
+- [x] FE04.8 — Template Gallery
+- [x] FE04.9 — Layer Panel
+- [x] FE04.10 — Side Toggle (Front/Back)
+- [x] FE04.11 — Keyboard Shortcuts
+- [x] FE04.12 — DesignEditorRoot (Wrapper)
 
 ### FE05 — Preview & Export → [`docs/tasks/fe/FE05-preview-export.md`](tasks/fe/FE05-preview-export.md)
 - [ ] FE05.1 — Export Utilities (PNG + JSON)
