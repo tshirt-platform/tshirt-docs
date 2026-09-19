@@ -48,7 +48,7 @@ sent to a print shop for production.
 | node | 20+ LTS | Runtime requirement |
 
 ### Shared
-- `@tshirt/shared` — npm package chứa TypeScript types dùng chung
+- `@tshirt-platform/shared` — npm package chứa TypeScript types dùng chung
 
 ---
 

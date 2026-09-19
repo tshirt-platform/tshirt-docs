@@ -1,13 +1,14 @@
 # Custom T-Shirt Platform — Monorepo Root
 
 ## Architecture
-Three packages, deployed independently:
+Four packages, deployed independently:
 
 | Package | Tech | Port | Purpose |
 |---|---|---|---|
 | `tshirt-store/` | Next.js 16 (App Router) | :3000 | Customer-facing storefront |
 | `tshirt-backend/` | Medusa.js v2 | :9000 | E-commerce backend + admin |
-| `tshirt-shared/` | TypeScript + tsup | — | Shared types (`@tshirt/shared`) |
+| `tshirt-shared/` | TypeScript + tsup | — | Shared types and print maths (`@tshirt-platform/shared`) |
+| `tshirt-render/` | Python, FastAPI, OpenCV | :8001 | Preview renderer: design onto a garment photo. Internal, never exposed to browsers |
 
 ## Shared Coding Rules
 1. TypeScript strict — no `any`, no `@ts-ignore`
@@ -16,9 +17,27 @@ Three packages, deployed independently:
 4. Absolute imports where supported
 
 ## Cross-Package Dependencies
-- `tshirt-store` and `tshirt-backend` both depend on `@tshirt/shared`
+- `tshirt-store` and `tshirt-backend` both depend on `@tshirt-platform/shared`
 - `tshirt-store` communicates with `tshirt-backend` via Medusa JS SDK
 - Design files stored on AWS S3 (presigned URLs)
+
+## Releasing `@tshirt-platform/shared`
+Hosted on GitHub Packages (`https://npm.pkg.github.com`). The scope must equal the org name, so the package is `@tshirt-platform/shared`.
+
+1. Bump `version` in `tshirt-shared/package.json` and merge to `master`
+2. `git tag vX.Y.Z && git push --tags` — `.github/workflows/publish.yml` tests, builds and publishes (the tag must match `version`)
+3. In `tshirt-store` and `tshirt-backend` set `"@tshirt-platform/shared": "^X.Y.Z"`, run `pnpm install`, commit the lockfile
+
+**Installing needs a token, even for public packages** (scope `read:packages`). Put it in your user-level `~/.npmrc`, never in the repo:
+```bash
+gh auth refresh -s read:packages,write:packages
+npm config set //npm.pkg.github.com/:_authToken "$(gh auth token)"
+```
+CI and hosting need the same line (`//npm.pkg.github.com/:_authToken=<token>`) written to `.npmrc` before `pnpm install`.
+
+**Before the first release, or to try shared changes locally:** `pnpm add @tshirt-platform/shared@file:../tshirt-shared` in the consumer (do NOT commit it), then `pnpm build` in shared and `pnpm install` in the consumer after each edit.
+
+**Never set `turbopack.root` in `tshirt-store/next.config.ts`.** It makes Next 16.2 respawn PostCSS workers without limit and freezes the machine. Bundled code must come from inside the project's `node_modules`, which is why shared is installed rather than linked.
 
 ## Package-Specific Instructions
 - See `tshirt-store/CLAUDE.md` for frontend patterns
@@ -89,7 +108,11 @@ cd tshirt-store && pnpm dev       # :3000
 
 # Terminal 3: Shared types (watch mode)
 cd tshirt-shared && pnpm dev
+
+# Terminal 4: Preview renderer (first time: python3 -m venv .venv && .venv/bin/pip install -r requirements-dev.txt)
+cd tshirt-render && .venv/bin/uvicorn app.main:app --port 8001
 ```
+Or run it in Docker with the rest: `docker compose up -d render`. Tests: `cd tshirt-render && .venv/bin/python -m pytest`.
 
 ## Lessons Learned
 

@@ -126,7 +126,7 @@ export async function drawPrintAreaOverlay(canvas: fabric.Canvas) {
 
 ```ts
 // lib/canvas/export.ts
-import { DESIGN_EXPORT } from "@tshirt/shared"
+import { DESIGN_EXPORT } from "@tshirt-platform/shared"
 
 export function exportToPng(canvas: fabric.Canvas): Blob {
   const multiplier = DESIGN_EXPORT.WIDTH / canvas.getWidth()

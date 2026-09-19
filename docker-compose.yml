@@ -21,6 +21,19 @@ services:
     volumes:
       - tshirt_redisdata:/data
 
+  # Internal preview renderer: reachable from this machine only
+  render:
+    build: ./tshirt-render
+    container_name: tshirt_render
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8001:8001"
+    environment:
+      RENDER_API_KEY: ${RENDER_API_KEY:-}
+    volumes:
+      - tshirt_renderdata:/data
+
 volumes:
   tshirt_pgdata:
   tshirt_redisdata:
+  tshirt_renderdata:

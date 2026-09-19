@@ -312,7 +312,7 @@ export default defineConfig({
 
 ```json
 {
-  "name": "@tshirt/shared",
+  "name": "@tshirt-platform/shared",
   "version": "1.0.0",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -375,5 +375,5 @@ cd tshirt-shared && pnpm dev
 ~/projects/
 ├── tshirt-store/       # Next.js 16 — localhost:3000
 ├── tshirt-backend/     # Medusa 2.x — localhost:9000
-└── tshirt-shared/      # @tshirt/shared types package
+└── tshirt-shared/      # @tshirt-platform/shared types package
 ```

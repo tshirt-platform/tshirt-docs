@@ -163,7 +163,7 @@ POST /admin/print-orders/:id/cancel (shipped) → 400
 | FE01.4 s3.ts | Unit Test | Generates correct presigned URL |
 | FE01.5 Utils | Build Check | cn() works, fonts load |
 | FE01.6 Layout | E2E (Browser) | Page renders at localhost:3000 |
-| FE01.7 Types | Build Check | @tshirt/shared imports work |
+| FE01.7 Types | Build Check | @tshirt-platform/shared imports work |
 
 ### Unit Tests to Write
 ```
