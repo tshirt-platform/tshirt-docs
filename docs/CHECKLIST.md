@@ -186,6 +186,52 @@ Phase 1 (Foundation)
          └──▶ FE04 ──▶ FE05 ──▶ FE06 ──▶ FE07 ──▶ FE08
 ```
 
+## Phase 7 — Design Pipeline → [`docs/DESIGN-PIPELINE-SPEC.md`](DESIGN-PIPELINE-SPEC.md)
+
+Editor → Preview → Export cho nhà in. `[x]` = đã code + có test; mục ghi *(chưa kiểm chứng)* cần xem tay.
+
+### DP01 — Print area derivation (`@tshirt-platform/shared`)
+- [x] DP01.1 — `derivePrintArea` (mm → px → rect trên line-art), `parsePrintConfig`, colour registry
+- [x] DP01.2 — Release qua GitHub Packages: `package.json`, workflow publish theo tag, `.npmrc`
+- [ ] DP01.3 — Publish `v1.0.0` và chuyển store/backend sang `^1.0.0` *(cần token `write:packages`)*
+
+### DP02 — Line-art calibration
+- [x] DP02.1 — `detectArtCalibration` + registry có test chống trôi
+
+### DP03 — Editor
+- [x] DP03.1 — Scene 800 đơn vị, export nhân multiplier lên 300 DPI
+- [x] DP03.2 — Tint màu vải, nét sáng trên vải tối; đổi màu trong editor
+- [x] DP03.3 — Nhận `variantId/color/size/qty` từ URL; bảng màu và bảng size đọc từ sản phẩm
+- [x] DP03.4 — Ảnh upload đặt ở 70% bề rộng; cảnh báo DPI; cảnh báo chữ khó nhìn trên màu áo
+
+### DP04 — Export
+- [x] DP04.1 — PNG nền trong suốt, đúng pixel, nhúng 300 DPI (pHYs)
+- [x] DP04.2 — `/api/upload-design` (S3 presigned; lưu cục bộ khi dev), `/api/files`
+- [ ] DP04.3 — Upload thật lên S3 *(chưa kiểm chứng: chưa có AWS)*
+
+### DP05 — Render service (`tshirt-render/`)
+- [x] DP05.1 — Tách áo khỏi nền, sinh bản đồ bóng/nếp vải, đổi màu, warp phối cảnh, ghép lớp
+- [x] DP05.2 — API templates + render, cache, khoá API tuỳ chọn
+- [ ] DP05.3 — `docker compose build render` *(chưa kiểm chứng)*
+- [ ] DP05.4 — Thử với ảnh áo thật (mới thử với ảnh tổng hợp)
+
+### DP06 — Admin
+- [x] DP06.1 — Proxy `/admin/mockups*` sang service render (có xác thực, stream upload)
+- [x] DP06.2 — Widget "Cấu hình in" trên trang sản phẩm: số đo, màu, mockup, kéo 4 góc
+- [ ] DP06.3 — Xem giao diện widget bằng tay *(cần đăng nhập admin)*
+
+### DP07 — Save & Preview
+- [x] DP07.1 — Nút Lưu thiết kế, modal xem trước (ảnh mockup hoặc bản phẳng), xác nhận + upload
+- [ ] DP07.2 — Đưa thiết kế đã lưu vào giỏ hàng *(thuộc FE06)*
+
+### DP08 — Backend cho nhà in
+- [x] DP08.1 — `PrintJob` thêm side/size/màu/vị trí/proof; migration; trạng thái `proof_approved`
+- [x] DP08.2 — Workflow đọc metadata nhiều mặt, tạo 1 job/mặt
+- [x] DP08.3 — Gói file: artwork theo tên chuẩn, proof, `spec.json`, `workorder.html`; chặn SSRF
+- [ ] DP08.4 — Chạy workflow `order.placed` với đơn thật *(chưa kiểm chứng)*
+
+---
+
 ### Parallel Tracks
 - **BE track**: BE01 → BE02 → BE03 → BE04 → BE05 → BE06
 - **FE pages track**: FE01 → FE02 → FE03 → FE09
