@@ -95,6 +95,9 @@ Tools used:
 ## Task Tracking
 - Master checklist: `docs/CHECKLIST.md`
 - Test strategies: `docs/tasks/test-strategies.md`
+- Backend routes and payloads: `docs/BACKEND-API.md`
+- Deploying: `docs/DEPLOYMENT.md` (environment variables, Docker image, go-live checklist, backups)
+- Whole-flow check against a running backend: `pnpm smoke` in `tshirt-backend`
 - FE task docs: `docs/tasks/fe/FE*.md`
 - BE task docs: `docs/tasks/be/BE*.md`
 

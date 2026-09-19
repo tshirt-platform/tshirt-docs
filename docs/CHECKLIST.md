@@ -114,12 +114,12 @@
 - [x] FE04.12 — DesignEditorRoot (Wrapper)
 
 ### FE05 — Preview & Export → [`docs/tasks/fe/FE05-preview-export.md`](tasks/fe/FE05-preview-export.md)
-- [ ] FE05.1 — Export Utilities (PNG + JSON)
-- [ ] FE05.2 — Upload Design API Route
-- [ ] FE05.3 — Upload Flow (Client)
-- [ ] FE05.4 — Preview Modal
-- [ ] FE05.5 — Add to Cart Flow
-- [ ] FE05.6 — Validation Before Export
+- [x] FE05.1 — Export Utilities (PNG + JSON)
+- [x] FE05.2 — Upload Design API Route *(upload đi qua backend `PUT /store/designs/...`, không còn route ở store)*
+- [x] FE05.3 — Upload Flow (Client)
+- [x] FE05.4 — Preview Modal
+- [x] FE05.5 — Add to Cart Flow
+- [x] FE05.6 — Validation Before Export
 
 ---
 
@@ -149,28 +149,28 @@
 ## Phase 6 — Order & Polish
 
 ### FE08 — Order Tracking → [`docs/tasks/fe/FE08-order-tracking.md`](tasks/fe/FE08-order-tracking.md)
-- [ ] FE08.1 — Order Tracking Page
-- [ ] FE08.2 — Progress Tracker Component
-- [ ] FE08.3 — Order Details
-- [ ] FE08.4 — Status Mapping
-- [ ] FE08.5 — Order Lookup (No Auth)
+- [x] FE08.1 — Order Tracking Page *(tra cứu qua `POST /store/order-lookup` vì `GET /store/orders/{id}` của Medusa cần đăng nhập)*
+- [x] FE08.2 — Progress Tracker Component
+- [x] FE08.3 — Order Details
+- [x] FE08.4 — Status Mapping *(theo trạng thái print job của mỗi mặt in)*
+- [x] FE08.5 — Order Lookup (No Auth) *(mã đơn + email; email không nằm trong URL)*
 
 ### FE09 — Polish & UX → [`docs/tasks/fe/FE09-polish.md`](tasks/fe/FE09-polish.md)
-- [ ] FE09.1 — Error Boundary
-- [ ] FE09.2 — Loading States
-- [ ] FE09.3 — Toast Notifications
-- [ ] FE09.4 — Mobile Responsive
-- [ ] FE09.5 — Animations (motion)
-- [ ] FE09.6 — 404 Page
-- [ ] FE09.7 — SEO & Metadata
+- [x] FE09.1 — Error Boundary
+- [x] FE09.2 — Loading States
+- [x] FE09.3 — Toast Notifications
+- [x] FE09.4 — Mobile Responsive *(không tràn ngang ở 375/768/1024/1440 trên 7 trang; editor giữ thanh công cụ ngang phía trên thay vì thanh dưới)*
+- [x] FE09.5 — Animations (motion)
+- [x] FE09.6 — 404 Page
+- [x] FE09.7 — SEO & Metadata *(chưa đo điểm Lighthouse)*
 
 ### BE06 — Testing & Deploy → [`docs/tasks/be/BE06-testing-deploy.md`](tasks/be/BE06-testing-deploy.md)
-- [ ] BE06.1 — API Testing
-- [ ] BE06.2 — Workflow Testing
-- [ ] BE06.3 — Environment Hardening
-- [ ] BE06.4 — Database (indexes, backup)
-- [ ] BE06.5 — Docker Setup
-- [ ] BE06.6 — Documentation
+- [x] BE06.1 — API Testing *(luồng khách hàng kiểm bằng `pnpm smoke` (12 bước); webhook và retry của nhà in ngoài không còn vì in thủ công)*
+- [x] BE06.2 — Workflow Testing *(unit test workflow + subscriber được smoke test kích hoạt thật; không cần mock nhà in)*
+- [x] BE06.3 — Environment Hardening *(giới hạn tần suất áp cho upload và tra cứu đơn, các route công khai duy nhất)*
+- [x] BE06.4 — Database (indexes, backup) *(index `order_id`, `status`; `scripts/backup-db.sh` + chiến lược trong `docs/DEPLOYMENT.md`)*
+- [x] BE06.5 — Docker Setup *(image build và chạy production, vượt smoke test)*
+- [x] BE06.6 — Documentation *(`docs/BACKEND-API.md`, `docs/DEPLOYMENT.md`)*
 
 ---
 
@@ -207,13 +207,13 @@ Editor → Preview → Export cho nhà in. `[x]` = đã code + có test; mục g
 ### DP04 — Export
 - [x] DP04.1 — PNG nền trong suốt, đúng pixel, nhúng 300 DPI (pHYs)
 - [x] DP04.2 — `/api/upload-design` (S3 presigned; lưu cục bộ khi dev), `/api/files`
-- [ ] DP04.3 — Upload thật lên S3 *(chưa kiểm chứng: chưa có AWS)*
+- [x] DP04.3 — Upload thật lên S3 *(chưa kiểm chứng: chưa có AWS)* *(đã thử với Cloudflare R2 thật: upload qua backend, mở công khai, đọc lại scene)*
 
 ### DP05 — Render service (`tshirt-render/`)
 - [x] DP05.1 — Tách áo khỏi nền, sinh bản đồ bóng/nếp vải, đổi màu, warp phối cảnh, ghép lớp
 - [x] DP05.2 — API templates + render, cache, khoá API tuỳ chọn
 - [x] DP05.3 — `docker compose build render`: container healthy, user không phải root, ghi được volume, bind 127.0.0.1
-- [ ] DP05.4 — Thử với ảnh áo thật (mới thử với ảnh tổng hợp)
+- [x] DP05.4 — Thử với ảnh áo thật *(1 ảnh Pexels áo thun trắng, nền đồng nhất, chạy end to end trong giao diện; áo hoodie/polo chưa có ảnh phù hợp. Lần thử làm lộ lỗi tách áo trắng trên nền nhạt, đã sửa ở tshirt-render#1)*
 
 ### DP06 — Admin
 - [x] DP06.1 — Proxy `/admin/mockups*` sang service render (có xác thực, stream upload)
