@@ -135,14 +135,14 @@
 - [x] FE06.7 — Cart API Integration
 
 ### FE07 — Checkout → [`docs/tasks/fe/FE07-checkout.md`](tasks/fe/FE07-checkout.md)
-- [ ] FE07.1 — Checkout Page
-- [ ] FE07.2 — Shipping Form
-- [ ] FE07.3 — Payment Method Selection
-- [ ] FE07.4 — Order Summary (Checkout)
-- [ ] FE07.5 — Checkout Submission (COD)
+- [x] FE07.1 — Checkout Page
+- [x] FE07.2 — Shipping Form *(Tỉnh → Phường/Xã: Việt Nam bỏ cấp Quận/Huyện từ 1/7/2025)*
+- [x] FE07.3 — Payment Method Selection *(VNPay hiện "Sắp ra mắt")*
+- [x] FE07.4 — Order Summary (Checkout) *(ô mã giảm giá là placeholder)*
+- [x] FE07.5 — Checkout Submission (COD)
 - [ ] FE07.6 — Checkout Submission (VNPay) — Future
-- [ ] FE07.7 — Success Page
-- [ ] FE07.8 — Zod Schemas
+- [x] FE07.7 — Success Page *(nút "Theo dõi đơn hàng" chờ FE08)*
+- [x] FE07.8 — Zod Schemas
 
 ---
 

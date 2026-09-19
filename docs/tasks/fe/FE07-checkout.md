@@ -21,13 +21,13 @@ Checkout page — shipping form, payment, order completion.
   - Số điện thoại (required, VN format: 10 digits, starts 0)
   - Email (required, valid email)
   - Tỉnh/Thành phố (select, 63 options)
-  - Quận/Huyện (select, depends on Tỉnh)
-  - Phường/Xã (select, depends on Quận)
+  - ~~Quận/Huyện~~ — bỏ: từ 1/7/2025 cả nước còn 34 tỉnh/thành và không còn cấp huyện
+  - Phường/Xã (select, depends on Tỉnh)
   - Địa chỉ chi tiết (textarea, required, min 5)
   - Ghi chú (textarea, optional)
 - [ ] Field-level validation on blur
-- [ ] Province → District → Ward cascading selects
-- [ ] Data source: static JSON hoặc API cho địa chỉ VN
+- [ ] Province → Ward cascading selects
+- [ ] Data source: `provinces.open-api.vn/api/v2` qua route `/api/address/*` của store (cache 1 ngày)
 
 ### FE07.3 — Payment Method Selection
 - [ ] Radio group: COD / VNPay

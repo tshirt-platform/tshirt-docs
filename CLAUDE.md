@@ -19,7 +19,7 @@ Four packages, deployed independently:
 ## Cross-Package Dependencies
 - `tshirt-store` and `tshirt-backend` both depend on `@tshirt-platform/shared`
 - `tshirt-store` communicates with `tshirt-backend` via Medusa JS SDK
-- Design files stored on AWS S3 (presigned URLs)
+- Design files (PNG, editor scene, preview) are uploaded to `tshirt-backend` (`PUT /store/designs/...`), which validates them and stores them in S3-compatible storage (Cloudflare R2 or AWS S3). The storefront holds no storage credentials.
 
 ## Releasing `@tshirt-platform/shared`
 Hosted on GitHub Packages (`https://npm.pkg.github.com`). The scope must equal the org name, so the package is `@tshirt-platform/shared`.
