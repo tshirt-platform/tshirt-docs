@@ -10,53 +10,53 @@ Trang giỏ hàng — quản lý items, edit design, proceed to checkout.
 ## Tasks
 
 ### FE06.1 — Cart State Management
-- [ ] Cart ID storage: localStorage
-- [ ] `useCart()` hook hoặc Zustand cart store
-- [ ] Auto-create cart nếu chưa có (POST /store/carts)
-- [ ] Hydrate cart state từ API on page load
-- [ ] Cart item count cho Header badge
+- [x] Cart ID storage: localStorage
+- [x] `useCart()` hook hoặc Zustand cart store
+- [x] Auto-create cart nếu chưa có (POST /store/carts)
+- [x] Hydrate cart state từ API on page load
+- [x] Cart item count cho Header badge
 
 ### FE06.2 — Cart Page (`app/(store)/cart/page.tsx`)
-- [ ] Fetch cart data từ Medusa API
-- [ ] Layout: items list (left) + order summary (right)
-- [ ] Responsive: stack on mobile
+- [x] Fetch cart data từ Medusa API
+- [x] Layout: items list (left) + order summary (right)
+- [x] Responsive: stack on mobile
 
 ### FE06.3 — Cart Item Component
-- [ ] Design mockup thumbnail (from design_png_url)
-- [ ] Product name + variant info (color, size)
-- [ ] Click thumbnail → lightbox full preview
-- [ ] Quantity selector (min 1, update via API)
-- [ ] Line item price × quantity = subtotal
-- [ ] "Chỉnh sửa thiết kế" link
-- [ ] Delete button (X icon)
-- [ ] Loading state khi updating quantity
+- [x] Design mockup thumbnail (from design_png_url)
+- [x] Product name + variant info (color, size)
+- [x] Click thumbnail → lightbox full preview
+- [x] Quantity selector (min 1, update via API)
+- [x] Line item price × quantity = subtotal
+- [x] "Chỉnh sửa thiết kế" link
+- [x] Delete button (X icon)
+- [x] Loading state khi updating quantity
 
 ### FE06.4 — Edit Design Flow
-- [ ] Click "Chỉnh sửa" → fetch design JSON from design_json_url
-- [ ] Navigate to `/design/[productId]?edit=true&lineItemId=[id]`
-- [ ] Editor loads JSON vào canvas
-- [ ] On save: re-export → re-upload → update line item metadata
-- [ ] Redirect back to `/cart`
+- [x] Click "Chỉnh sửa" → fetch design JSON from design_json_url
+- [x] Navigate to `/design/[productId]?edit=true&lineItemId=[id]`
+- [x] Editor loads JSON vào canvas
+- [x] On save: re-export → re-upload → update line item metadata
+- [x] Redirect back to `/cart`
 
 ### FE06.5 — Order Summary Sidebar
-- [ ] Subtotal (sum of all line items)
-- [ ] Shipping: "Tính khi checkout" hoặc estimated
+- [x] Subtotal (sum of all line items)
+- [x] Shipping: "Tính khi checkout" hoặc estimated
 - [ ] Discount code input + "Áp dụng" button (future)
-- [ ] Total (bold)
-- [ ] "Tiến hành thanh toán" CTA → `/checkout`
-- [ ] Disabled state khi cart empty
+- [x] Total (bold)
+- [x] "Tiến hành thanh toán" CTA → `/checkout`
+- [x] Disabled state khi cart empty
 
 ### FE06.6 — Empty Cart State
-- [ ] Illustration/icon
-- [ ] "Giỏ hàng trống" message
-- [ ] CTA: "Bắt đầu thiết kế" → `/products`
+- [x] Illustration/icon
+- [x] "Giỏ hàng trống" message
+- [x] CTA: "Bắt đầu thiết kế" → `/products`
 
 ### FE06.7 — Cart API Integration
-- [ ] GET /store/carts/{id} — fetch cart
-- [ ] POST /store/carts/{id}/line-items/{itemId} — update quantity
-- [ ] DELETE /store/carts/{id}/line-items/{itemId} — remove item
-- [ ] Optimistic updates cho quantity change
-- [ ] Error handling + toast
+- [x] GET /store/carts/{id} — fetch cart
+- [x] POST /store/carts/{id}/line-items/{itemId} — update quantity
+- [x] DELETE /store/carts/{id}/line-items/{itemId} — remove item
+- [x] Optimistic updates cho quantity change
+- [x] Error handling + toast
 
 ## Acceptance Criteria
 - Cart items render đúng từ API
