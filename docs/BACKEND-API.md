@@ -100,6 +100,13 @@ Proxied to the render service (`tshirt-render`), which has no accounts of its ow
 | GET | `/admin/mockups/:id/image` |
 | PUT | `/admin/mockups/:id/mask`, `/admin/mockups/:id/occlusion` (multipart) |
 | PUT | `/admin/mockups/:id/quad` (JSON) |
+| PUT | `/admin/mockups/:id/quad/fit` (JSON `{print_width_mm, print_height_mm, top_offset_mm, garment_length_mm}`): puts the print at its true size and proportions, centred, hanging below the shoulder line |
+| PUT | `/admin/mockups/:id/mask/outline`, `/admin/mockups/:id/occlusion/outline` (JSON `{outlines: [[[x,y]...]], refine}`, corners in 0..1): hand-drawn garment area / parts in front of the print, for photos that are not on a plain background. The edge is snapped to the photo |
+| DELETE | `/admin/mockups/:id/occlusion` |
+
+`product.metadata.print_config.mockups` is `{ front: string[], back: string[] }`: template ids in the order the
+storefront shows them (an older single id still reads as a list of one). The photo shows one reference size; its
+body length turns millimetres into pixels for `quad/fit`.
 
 ## Health
 
