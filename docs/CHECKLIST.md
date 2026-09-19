@@ -213,7 +213,7 @@ Editor → Preview → Export cho nhà in. `[x]` = đã code + có test; mục g
 - [x] DP05.1 — Tách áo khỏi nền, sinh bản đồ bóng/nếp vải, đổi màu, warp phối cảnh, ghép lớp
 - [x] DP05.2 — API templates + render, cache, khoá API tuỳ chọn
 - [x] DP05.3 — `docker compose build render`: container healthy, user không phải root, ghi được volume, bind 127.0.0.1
-- [ ] DP05.4 — Thử với ảnh áo thật (mới thử với ảnh tổng hợp)
+- [x] DP05.4 — Thử với ảnh áo thật *(1 ảnh Pexels áo thun trắng, nền đồng nhất, chạy end to end trong giao diện; áo hoodie/polo chưa có ảnh phù hợp. Lần thử làm lộ lỗi tách áo trắng trên nền nhạt, đã sửa ở tshirt-render#1)*
 
 ### DP06 — Admin
 - [x] DP06.1 — Proxy `/admin/mockups*` sang service render (có xác thực, stream upload)
