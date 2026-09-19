@@ -162,7 +162,7 @@
 - [x] FE09.4 — Mobile Responsive *(không tràn ngang ở 375/768/1024/1440 trên 7 trang; editor giữ thanh công cụ ngang phía trên thay vì thanh dưới)*
 - [x] FE09.5 — Animations (motion)
 - [x] FE09.6 — 404 Page
-- [x] FE09.7 — SEO & Metadata *(chưa đo điểm Lighthouse)*
+- [x] FE09.7 — SEO & Metadata *(Lighthouse mobile: trang chủ A11y 96 / BP 100 / SEO 100; trang sản phẩm 96 / 100 / 92, phần thiếu do Next 16 stream thẻ description vào body với UA thường, thẻ có trong DOM)*
 
 ### BE06 — Testing & Deploy → [`docs/tasks/be/BE06-testing-deploy.md`](tasks/be/BE06-testing-deploy.md)
 - [x] BE06.1 — API Testing *(luồng khách hàng kiểm bằng `pnpm smoke` (12 bước); webhook và retry của nhà in ngoài không còn vì in thủ công)*
@@ -218,7 +218,7 @@ Editor → Preview → Export cho nhà in. `[x]` = đã code + có test; mục g
 ### DP06 — Admin
 - [x] DP06.1 — Proxy `/admin/mockups*` sang service render (có xác thực, stream upload)
 - [x] DP06.2 — Widget "Cấu hình in" trên trang sản phẩm: số đo, màu, mockup, kéo 4 góc
-- [ ] DP06.3 — Xem giao diện widget bằng tay *(cần đăng nhập admin)*
+- [x] DP06.3 — Xem giao diện widget bằng tay *(qua Chrome DevTools MCP: số đo, khổ in tính được, màu vải, tải ảnh mockup, đặt 4 góc, lưu; cấu hình lưu bền và xem trước dùng ảnh áo thật)*
 
 ### DP07 — Save & Preview
 - [x] DP07.1 — Nút Lưu thiết kế, modal xem trước (ảnh mockup hoặc bản phẳng), xác nhận + upload
