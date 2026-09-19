@@ -126,13 +126,13 @@
 ## Phase 5 — Checkout Flow
 
 ### FE06 — Cart → [`docs/tasks/fe/FE06-cart.md`](tasks/fe/FE06-cart.md)
-- [ ] FE06.1 — Cart State Management
-- [ ] FE06.2 — Cart Page
-- [ ] FE06.3 — Cart Item Component
-- [ ] FE06.4 — Edit Design Flow
-- [ ] FE06.5 — Order Summary Sidebar
-- [ ] FE06.6 — Empty Cart State
-- [ ] FE06.7 — Cart API Integration
+- [x] FE06.1 — Cart State Management
+- [x] FE06.2 — Cart Page
+- [x] FE06.3 — Cart Item Component
+- [x] FE06.4 — Edit Design Flow
+- [x] FE06.5 — Order Summary Sidebar
+- [x] FE06.6 — Empty Cart State
+- [x] FE06.7 — Cart API Integration
 
 ### FE07 — Checkout → [`docs/tasks/fe/FE07-checkout.md`](tasks/fe/FE07-checkout.md)
 - [ ] FE07.1 — Checkout Page
@@ -193,7 +193,7 @@ Editor → Preview → Export cho nhà in. `[x]` = đã code + có test; mục g
 ### DP01 — Print area derivation (`@tshirt-platform/shared`)
 - [x] DP01.1 — `derivePrintArea` (mm → px → rect trên line-art), `parsePrintConfig`, colour registry
 - [x] DP01.2 — Release qua GitHub Packages: `package.json`, workflow publish theo tag, `.npmrc`
-- [ ] DP01.3 — Publish `v1.0.0` và chuyển store/backend sang `^1.0.0` *(cần token `write:packages`)*
+- [x] DP01.3 — Publish `v1.0.0` và chuyển store/backend sang `^1.0.0`
 
 ### DP02 — Line-art calibration
 - [x] DP02.1 — `detectArtCalibration` + registry có test chống trôi
@@ -212,7 +212,7 @@ Editor → Preview → Export cho nhà in. `[x]` = đã code + có test; mục g
 ### DP05 — Render service (`tshirt-render/`)
 - [x] DP05.1 — Tách áo khỏi nền, sinh bản đồ bóng/nếp vải, đổi màu, warp phối cảnh, ghép lớp
 - [x] DP05.2 — API templates + render, cache, khoá API tuỳ chọn
-- [ ] DP05.3 — `docker compose build render` *(chưa kiểm chứng)*
+- [x] DP05.3 — `docker compose build render`: container healthy, user không phải root, ghi được volume, bind 127.0.0.1
 - [ ] DP05.4 — Thử với ảnh áo thật (mới thử với ảnh tổng hợp)
 
 ### DP06 — Admin
@@ -222,13 +222,13 @@ Editor → Preview → Export cho nhà in. `[x]` = đã code + có test; mục g
 
 ### DP07 — Save & Preview
 - [x] DP07.1 — Nút Lưu thiết kế, modal xem trước (ảnh mockup hoặc bản phẳng), xác nhận + upload
-- [ ] DP07.2 — Đưa thiết kế đã lưu vào giỏ hàng *(thuộc FE06)*
+- [x] DP07.2 — Đưa thiết kế đã lưu vào giỏ hàng (thêm, cập nhật, sửa lại từ giỏ) — xem FE06
 
 ### DP08 — Backend cho nhà in
 - [x] DP08.1 — `PrintJob` thêm side/size/màu/vị trí/proof; migration; trạng thái `proof_approved`
 - [x] DP08.2 — Workflow đọc metadata nhiều mặt, tạo 1 job/mặt
 - [x] DP08.3 — Gói file: artwork theo tên chuẩn, proof, `spec.json`, `workorder.html`; chặn SSRF
-- [ ] DP08.4 — Chạy workflow `order.placed` với đơn thật *(chưa kiểm chứng)*
+- [x] DP08.4 — Workflow tạo print job chạy với đơn thật trong DB (đơn 2 mặt và mục kiểu cũ)
 
 ---
 
