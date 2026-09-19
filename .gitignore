@@ -2,6 +2,7 @@
 tshirt-backend/
 tshirt-shared/
 tshirt-store/
+tshirt-render/
 
 # OS files
 .DS_Store

@@ -11,7 +11,7 @@ Canvas-based design editor — tính năng chính của platform.
 ## Tasks
 
 ### FE04.1 — Zustand Design Store (`lib/store/design.store.ts`)
-- [ ] Define DesignState interface (from @tshirt/shared)
+- [ ] Define DesignState interface (from @tshirt-platform/shared)
 - [ ] Actions: setCanvas, setActiveTool, setSide, saveSnapshot, undo, redo
 - [ ] Front/back canvas JSON storage
 - [ ] History management (max 30 snapshots)

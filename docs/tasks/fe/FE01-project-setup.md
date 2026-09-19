@@ -45,7 +45,7 @@ Thiết lập cấu trúc dự án, config, shared utilities cho tshirt-store.
 - [ ] Setup Sonner toast provider
 
 ### FE01.7 — Shared Types
-- [ ] Verify `@tshirt/shared` import works
+- [ ] Verify `@tshirt-platform/shared` import works
 - [ ] Create local types in `src/types/` nếu cần (component-specific types)
 
 ## Acceptance Criteria
