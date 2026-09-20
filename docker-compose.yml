@@ -72,6 +72,10 @@ services:
       - "127.0.0.1:8001:8001"
     environment:
       RENDER_API_KEY: ${RENDER_API_KEY:-}
+      # Optional AI analysis of mockup photos: on only when both are set
+      VISION_API_KEY: ${VISION_API_KEY:-}
+      VISION_MODEL: ${VISION_MODEL:-}
+      VISION_API_URL: ${VISION_API_URL:-}
     volumes:
       - tshirt_renderdata:/data
 

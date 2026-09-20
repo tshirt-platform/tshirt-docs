@@ -103,6 +103,10 @@ Proxied to the render service (`tshirt-render`), which has no accounts of its ow
 | PUT | `/admin/mockups/:id/quad/fit` (JSON `{print_width_mm, print_height_mm, top_offset_mm, garment_length_mm}`): puts the print at its true size and proportions, centred, hanging below the shoulder line |
 | PUT | `/admin/mockups/:id/mask/outline`, `/admin/mockups/:id/occlusion/outline` (JSON `{outlines: [[[x,y]...]], refine}`, corners in 0..1): hand-drawn garment area / parts in front of the print, for photos that are not on a plain background. The edge is snapped to the photo |
 | DELETE | `/admin/mockups/:id/occlusion` |
+| GET | `/admin/mockups/:id/anchors`, PUT `/admin/mockups/:id/quad/anchor` | the three reference points (shoulder, left and right chest edge) and placing the print from them; the points are `confirmed` once a person saved them |
+| GET | `/admin/mockups/:id/sample?hex=%23F4F4F0&width=560` | a ready-made sample design on the photo in a garment colour, for the admin |
+| GET | `/admin/mockup-ai` | `{ enabled, model }`: whether AI analysis is switched on |
+| POST | `/admin/mockups/:id/analyze` | body `{print_width_mm, print_height_mm, top_offset_mm, body_width_mm}`. A vision model reads the photo (shirt outline, reference points, turn of the body, what hides the shirt) and the service sets the photo up; the points stay unconfirmed. 503 when AI is off, 422 when the model says the photo cannot be used, 502 when it fails or answers something impossible |
 
 `product.metadata.print_config.mockups` is `{ front: string[], back: string[] }`: template ids in the order the
 storefront shows them (an older single id still reads as a list of one). The photo shows one reference size; its
