@@ -14,6 +14,7 @@ starting; in development it prints a warning.
 |---|---|---|
 | `DATABASE_URL` | yes | Postgres connection string. In production Medusa connects with SSL: a managed database works as it is; for one without SSL (such as the compose container) append `?sslmode=disable` |
 | `REDIS_URL` | production | events and caching |
+| `VISION_API_KEY`, `VISION_MODEL` (render service) | no | switch on AI analysis of mockup photos. Both are needed; no model name is assumed. Put them in `tshirt-render/.env` (git-ignored) or the environment. Each analysed photo is sent to the provider once, so only use photos you may share. `VISION_API_URL` points at another OpenAI-compatible endpoint |
 | `ADMIN_SESSION_TTL_HOURS` | no | admin login lifetime in hours, default 10. Sliding once set. Sessions are kept in Redis, so they survive a backend restart. Development may use up to 720 (e.g. 336); production refuses more than 24 |
 | `JWT_SECRET`, `COOKIE_SECRET` | production | at least 32 characters, not a placeholder. Generate with `openssl rand -hex 32` |
 | `STORE_CORS`, `ADMIN_CORS`, `AUTH_CORS` | yes | comma-separated origins. Production refuses `*` and `localhost` |
