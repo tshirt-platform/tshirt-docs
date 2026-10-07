@@ -120,6 +120,10 @@
 - [x] FE05.4 — Preview Modal
 - [x] FE05.5 — Add to Cart Flow
 - [x] FE05.6 — Validation Before Export
+- [ ] FE05.7 — Mockup API Client
+- [ ] FE05.8 — Extended MockupConfig
+- [ ] FE05.9 — Enhanced Mockup Renderer (alpha, silhouette, polygon)
+- [ ] FE05.10 — Dynamic Config Merge in PreviewModal
 
 ---
 
@@ -174,6 +178,39 @@
 
 ---
 
+## Phase 7 — Mockup Layer Pipeline
+
+### BE07 — Mockup Template Module → `docs/tasks/be/BE07-mockup-template-module.md`
+- [ ] BE07.1 — MockupTemplate Data Model
+- [ ] BE07.2 — MockupTemplateService
+- [ ] BE07.3 — Module Definition + Register + Migration
+
+### BE08 — Mockup Processing Pipeline → `docs/tasks/be/BE08-mockup-processing-pipeline.md`
+- [ ] BE08.1 — Claude Vision Analysis Step
+- [ ] BE08.2 — Generate Shadow Layer Step
+- [ ] BE08.3 — Background Removal Step (Replicate rembg)
+- [ ] BE08.4 — Generate Alpha + Silhouette Masks Step
+- [ ] BE08.5 — Generate Overlay Layer Step (Replicate SAM)
+- [ ] BE08.6 — Generate Displacement Map Step
+- [ ] BE08.7 — Upload Layers to S3 Step + S3 Util
+- [ ] BE08.8 — Process Mockup Workflow (orchestration)
+
+### BE09 — Mockup Admin API Routes → `docs/tasks/be/BE09-mockup-admin-api.md`
+- [ ] BE09.1 — POST /admin/mockup-templates/analyze
+- [ ] BE09.2 — GET /admin/mockup-templates (list)
+- [ ] BE09.3 — GET /admin/mockup-templates/:id
+- [ ] BE09.4 — PATCH /admin/mockup-templates/:id/print-area
+- [ ] BE09.5 — GET /store/mockup-templates (public)
+- [ ] BE09.6 — Middleware + Validators
+
+### FE10 — Admin Mockup Management (Medusa Admin) → `docs/tasks/fe/FE10-admin-mockup-management.md`
+- [ ] FE10.1 — Mockup Templates List Page (admin route)
+- [ ] FE10.2 — Upload + Analyze Flow
+- [ ] FE10.3 — Mockup Detail Page (Layers/PrintArea/Preview tabs)
+- [ ] FE10.4 — Print Area Polygon Editor Component
+
+---
+
 ## Dependency Graph
 
 ```
@@ -184,6 +221,10 @@ Phase 1 (Foundation)
          │              │
          │              ▼
          └──▶ FE04 ──▶ FE05 ──▶ FE06 ──▶ FE07 ──▶ FE08
+
+Phase 7 (Mockup Pipeline)
+  BE05 ──▶ BE07 ──▶ BE08 ──▶ BE09 ──▶ FE10
+                                  └──▶ FE05.7-10
 ```
 
 ## Phase 7 — Design Pipeline → [`docs/DESIGN-PIPELINE-SPEC.md`](DESIGN-PIPELINE-SPEC.md)
@@ -236,8 +277,10 @@ Editor → Preview → Export cho nhà in. `[x]` = đã code + có test; mục g
 - **BE track**: BE01 → BE02 → BE03 → BE04 → BE05 → BE06
 - **FE pages track**: FE01 → FE02 → FE03 → FE09
 - **FE editor track**: FE01 → FE04 → FE05 → FE06 → FE07 → FE08
-- FE03 + FE04 có thể chạy song song sau FE01
-- BE track + FE track có thể chạy song song (FE dùng mock data ban đầu)
+- **Mockup pipeline**: BE07 → BE08 → BE09 → FE10 + FE05.7-10
+- FE03 + FE04 can run in parallel after FE01
+- BE track + FE track can run in parallel
+- FE10 + FE05.7-10 can run in parallel after BE09
 
 ---
 
@@ -246,8 +289,10 @@ Editor → Preview → Export cho nhà in. `[x]` = đã code + có test; mục g
 | Category | Tasks | Subtasks |
 |---|---|---|
 | Backend (BE01–BE06) | 6 | 39 |
-| Frontend (FE01–FE09) | 9 | 63 |
-| **Total** | **15** | **102** |
+| Backend Mockup (BE07–BE09) | 3 | 17 |
+| Frontend (FE01–FE09) | 9 | 67 |
+| Frontend Mockup (FE10) | 1 | 4 |
+| **Total** | **19** | **127** |
 
 | Phase | Tasks | Description |
 |---|---|---|
@@ -257,3 +302,4 @@ Editor → Preview → Export cho nhà in. `[x]` = đã code + có test; mục g
 | Phase 4 | FE04, FE05 | Design editor — core feature |
 | Phase 5 | FE06, FE07 | Checkout — cart, payment |
 | Phase 6 | FE08, FE09, BE06 | Polish — tracking, UX, testing |
+| Phase 7 | BE07–BE09, FE05.7-10, FE10 | Mockup layer pipeline — auto-generate layers, admin CMS |
